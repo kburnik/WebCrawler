@@ -1,13 +1,17 @@
 <?
 
-abstract class HttpClient implements IHttpClient {
+abstract class HttpClient implements IHttpClient 
+{
 
 	public function getLinksFromPage( $fetchedPage ) 
 	{
 	
 		if ( ! $fetchedPage instanceOf FetchedPage ) 
 		{
-			throw new Exception( "Expected FetchedPage, got " . var_export( $fetchedPage , true ) );
+			throw new Exception( 
+				"Expected FetchedPage, got " 
+				. var_export( $fetchedPage , true ) 
+			);
 		}
 		
 		$htmlDocument = phpQuery::newDocumentHTML( $fetchedPage->contents );
@@ -16,6 +20,7 @@ abstract class HttpClient implements IHttpClient {
 		
 		return $links;
 	}
+	
 }
 
 ?>
