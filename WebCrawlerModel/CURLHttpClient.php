@@ -1,7 +1,7 @@
 <?
 
 
-class CURLHttpClient implements IHttpClient 
+class CURLHttpClient extends HttpClient 
 {
 	
 	public function getPageContentsWithStatusCode( $url ) 
@@ -23,6 +23,9 @@ class CURLHttpClient implements IHttpClient
 		
 		return array( $response , $http_status);
 	}
+	
+	
+	
 
 }
 

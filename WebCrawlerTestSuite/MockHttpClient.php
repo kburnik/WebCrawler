@@ -1,9 +1,10 @@
 <?
 
-class MockHttpClient implements IHttpClient 
+class MockHttpClient extends HttpClient 
 {
 
-	private $existingPages = null;	
+	private $existingPages = null;
+	
 	
 	public function __construct( $existingPages ) 
 	{
@@ -34,7 +35,7 @@ class MockHttpClient implements IHttpClient
 				);
 		}
 	
-	}	
+	}
 
 }
 

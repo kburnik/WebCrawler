@@ -43,9 +43,7 @@ class WebCrawler extends Base
 	{
 		if ( ! $trackingStorage instanceOf IStorage ) 
 		{
-		
 			throw new Exception("Expected IStorage, got " . var_export( $trackingStorage , true ));
-			
 		}
 		
 		$this->trackingStorage = $trackingStorage;
@@ -56,6 +54,7 @@ class WebCrawler extends Base
 	{
 		return $this->trackingStorage;
 	}
+	
 	
 	public function getPageWithStatusCode( $url )
 	{
@@ -70,20 +69,14 @@ class WebCrawler extends Base
 	public function extractUniqueLinksFromPage( $fetchedPage , $domainRestriction = null ) 
 	{
 		
-		
 		$links = array();
 		
-		try {
-			$doc = phpQuery::newDocumentHTML( $fetchedPage->contents );
 			
-			foreach ( pq( 'a' , $doc ) as $a ) 
-			{
-				$links[] = new PageLink( $a->getAttribute('href') );
-			}
-			
-		} catch (Exception $ex) {
-			throw $ex;
+		foreach ( $this->httpClient->getLinksFromPage( $fetchedPage )  as $a ) 
+		{
+			$links[] = new PageLink( $a->getAttribute('href') );
 		}
+		
 		
 		if ( $domainRestriction != null ) 
 		{
@@ -92,8 +85,6 @@ class WebCrawler extends Base
 	
 		return array_values( array_unique( $links ) );
 	}
-	
-	
 	
 	
 	public function startCrawl( $startURL , $depth ) 
