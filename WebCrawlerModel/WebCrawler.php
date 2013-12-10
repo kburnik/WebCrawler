@@ -99,28 +99,45 @@ class WebCrawler extends Base
 	
 	// privates
 	
-	private function _crawl( $url , $depth , $domainRestriction ) 
+	private function _crawl( $startingURL , $crawlingDepth , $domainRestriction ) 
 	{
-		if ( $depth < 0 || $this->_isPageVisited( $url ) )
+		if ( $crawlingDepth < 0 )
 			return;
 			
+		$queue = array();
 		
-		$fetchedPage = $this->getPageWithStatusCode( $url );
-	
-		$this->_trackVisitedLink( $url );
+		$queue[] = array( $startingURL , 0 , $domainRestriction );
 		
-		$this->onPageVisited( $url , $fetchedPage );
+		$this->_setPageQueued( $startingURL );
 		
-		if ( $depth == 0 )
-			return;
-				
-		$nextLinks = $this->extractUniqueLinksFromPage( $fetchedPage , $url );
-		
-		foreach ( $nextLinks as $nextLink ) 
+		do 
 		{
-			$this->_crawl( $nextLink->url , ($depth - 1) , $url );
-		}
+			list( $currentURL, $currentDepth , $parentURL ) = array_shift( $queue );
 			
+			$fetchedPage = $this->getPageWithStatusCode( $currentURL );
+			
+			$this->onPageVisited( $currentURL , $fetchedPage );
+		
+			if ( $currentDepth < $crawlingDepth ) 
+			{
+			
+				$nextLinks = $this->extractUniqueLinksFromPage( $fetchedPage , $currentURL );
+			
+				foreach ( $nextLinks as $nextLink ) 
+				{
+					if ( ! $this->_isPageQueued( $nextLink->url ) )
+					{
+						$queue[] = array( $nextLink->url , ($currentDepth + 1) , $currentURL );
+						
+						$this->_setPageQueued( $nextLink->url );
+					}
+				}
+				
+			}
+		
+		} 
+		while ( count($queue) > 0 );
+					
 	}
 	
 	
@@ -176,12 +193,12 @@ class WebCrawler extends Base
 	
 	}
 	
-	private function _isPageVisited( $url ) 
+	private function _isPageQueued( $url ) 
 	{
 		return $this->trackingStorage->exists( $url );
 	}
 	
-	private function _trackVisitedLink( $url ) 
+	private function _setPageQueued( $url ) 
 	{
 		$this->trackingStorage->write( $url , true );
 	}

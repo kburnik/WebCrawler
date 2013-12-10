@@ -34,7 +34,10 @@ class WebCrawlerTestModule extends TestUnitModule
 					<title>Index page</title>
 					<a href='/1'>Page 1</a>
 					<a href='/2'>Page 2</a>
-					<a href='/3'>Page 3</a>									
+					<a href='/3'>Page 3</a>	
+					
+					<a href='.'>Index</a>
+					<a href='/'>Index</a>
 					",
 					
 						"{$dp}/1" => "
@@ -42,6 +45,7 @@ class WebCrawlerTestModule extends TestUnitModule
 							<a href='/1.1'>Page 1.1</a>
 							<a href='/1.2'>Page 1.2</a>
 							<a href='/'>Back to index</a>
+							<a href='/1'>Link to self</a>
 						" ,
 
 							"{$dp}/1.1" => "
@@ -524,6 +528,18 @@ class WebCrawlerTestModule extends TestUnitModule
 						, new FetchedPage( $this->mockWebSiteMap[ $firstPageURL ] , 200 )
 					),
 					
+					
+					array(
+						$secondPageURL
+						, new FetchedPage( $this->mockWebSiteMap[ $secondPageURL ] , 200 )
+					),
+					
+					
+					array(
+						$thirdPageURL
+						, new FetchedPage( $this->mockWebSiteMap[ $thirdPageURL ] , 200 )
+					),
+						
 						array(
 							$firstPageFirstSubPageURL
 							, new FetchedPage( $this->mockWebSiteMap[ $firstPageFirstSubPageURL ] , 200 )
@@ -534,12 +550,7 @@ class WebCrawlerTestModule extends TestUnitModule
 							$firstPageSecondSubPageURL
 							, new FetchedPage( $this->mockWebSiteMap[ $firstPageSecondSubPageURL ] , 200 )
 						),
-					
-					array(
-						$secondPageURL
-						, new FetchedPage( $this->mockWebSiteMap[ $secondPageURL ] , 200 )
-					),
-					
+						
 						array(
 							$secondPageFirstSubPageURL
 							, new FetchedPage( $this->mockWebSiteMap[ $secondPageFirstSubPageURL ] , 200 )
@@ -551,10 +562,6 @@ class WebCrawlerTestModule extends TestUnitModule
 							, new FetchedPage( $this->mockWebSiteMap[ $secondPageSecondSubPageURL ] , 200 )
 						),
 					
-					array(
-						$thirdPageURL
-						, new FetchedPage( $this->mockWebSiteMap[ $thirdPageURL ] , 200 )
-					),
 					
 						array(
 							$thirdPageFirstSubPageURL
