@@ -7,6 +7,8 @@ interface IHttpClient
 	
 	public function getLinksFromPage( $fetchedPage );
 	
+	public function getAbsoluteUrl( $currentURL , $relativeURL );
+	
 }
 
 ?>
