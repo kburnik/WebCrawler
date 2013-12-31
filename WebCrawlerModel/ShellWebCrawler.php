@@ -27,6 +27,7 @@ class ShellWebCrawler
 				$color = "yellow";
 			break;
 			case 404:
+			case 500:
 				$color = "red";
 			break;
 			default:
